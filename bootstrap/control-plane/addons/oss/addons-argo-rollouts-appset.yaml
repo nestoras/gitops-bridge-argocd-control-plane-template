@@ -14,7 +14,7 @@ spec:
               values:
                 addonChart: argo-rollouts
                 # anything not staging or prod use this version
-                addonChartVersion: 2.34.3
+                addonChartVersion: 2.37.7
                 addonChartRepository: https://argoproj.github.io/argo-helm
               selector:
                 matchExpressions:
