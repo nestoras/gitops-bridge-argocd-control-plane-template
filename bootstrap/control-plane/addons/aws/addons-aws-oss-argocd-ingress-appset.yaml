@@ -15,7 +15,7 @@ spec:
               values:
                 addonChart: argo-cd
                 # anything not staging or prod use this version
-                addonChartVersion: 7.6.9
+                addonChartVersion: 7.6.12
                 addonChartRepository: https://argoproj.github.io/argo-helm
               selector:
                 matchExpressions:
@@ -30,13 +30,13 @@ spec:
                 matchLabels:
                   environment: staging
               values:
-                addonChartVersion: 7.6.9
+                addonChartVersion: 7.6.12
           - clusters:
               selector:
                 matchLabels:
                   environment: prod
               values:
-                addonChartVersion: 7.6.9
+                addonChartVersion: 7.6.12
   template:
     metadata:
       name: addon-{{.name}}-aws-{{.values.addonChart}}
@@ -67,8 +67,10 @@ spec:
                   controller: "aws"
                   ingressClassName: "alb"
                   annotations:
-                    alb.ingress.kubernetes.io/scheme: "internet-facing"
+                    alb.ingress.kubernetes.io/scheme: "internal"
+                    alb.ingress.kubernetes.io/certificate-arn: {{.metadata.annotations.argocd_certificate}}
                     alb.ingress.kubernetes.io/target-type: "ip"
+                    external-dns.alpha.kubernetes.io/hostname: {{.metadata.annotations.argocd_domain}}
                     alb.ingress.kubernetes.io/backend-protocol: "HTTPS"
                     alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\":80},{\"HTTPS\":443}]"
                     alb.ingress.kubernetes.io/ssl-redirect: "443"
